@@ -6,7 +6,7 @@
 go get github.com/gorilla/websocket
 ```
 
-## [Go YAML]
+## [Go YAML](https://github.com/go-yaml/yaml)
 
 ```bash
 go get github.com/go-yaml/yaml
