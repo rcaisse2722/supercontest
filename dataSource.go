@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+	//"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -68,19 +68,22 @@ func (ws WebSocketDataSource) GetData() (string, error) {
 	}
 	fmt.Println(string(message))
 
-	for _, msg := range [2]string{ws.Config["InitialMsg"].(string), ws.Config["GetSelectionsMsg"].(string)} {
-		err = c.WriteMessage(websocket.TextMessage, []byte(msg))
-		if err != nil {
+	text := []byte(ws.Config["InitialMsg"].(string))
+	err = c.WriteMessage(websocket.TextMessage, text)
+	if err != nil {
 			return "", err
-		}
 	}
 
 	_, message, err = c.ReadMessage()
 	if err != nil {
 		// handle error
 		return "", err
-	} else if !strings.Contains(string(message), okMessage) {
-		return "", errors.New("Unexpected response" + string(message))
+	} // TODO Verify message
+
+	fmt.Println(string(message))
+	err = c.WriteMessage(websocket.TextMessage, []byte(ws.Config["GetSelectionsMsg"].(string)))
+	if err != nil {
+			return "", err
 	}
 
 	var sb strings.Builder
