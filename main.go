@@ -18,15 +18,25 @@ func main() {
 	configuration, err := parseConfigFile(configFile)
 	if err != nil {
 		fmt.Println("Error parsing configuration file: " + err.Error())
+		return
 	}
+	sinks := getOutputSinks(configuration)
 
 	dataSource := getDataSource(configuration)
 	data, err := dataSource.GetData()
 	if err != nil {
 		fmt.Println("Error getting data: " + err.Error())
+		return
 	}
 
-	fmt.Println(data)
+	if (len(sinks) > 0) {
+		fmt.Println(data)
+		for _, sink := range sinks {
+			if (sink != nil) {
+				 sink.Write(data)
+			}
+		}
+	}
 }
 
 func parseConfigFile(file string) (map[string]interface{}, error) {

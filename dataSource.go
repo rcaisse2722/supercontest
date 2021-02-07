@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-type DataSource interface {
+type IDataSource interface {
 	GetData() (string, error)
 }
 
@@ -22,7 +22,7 @@ type FileDataSource struct {
 	File string
 }
 
-func getDataSource(config map[string]interface{}) DataSource {
+func getDataSource(config map[string]interface{}) IDataSource {
 	isFileInput := false
 	if val, ok := config["IsFileInput"]; ok {
 		isFileInput = val.(bool)
